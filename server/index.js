@@ -9,7 +9,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 //bring the library to work
 const express = require('express');
-
+const user = require("./models/User");
 
 //create a app
 const app = express();
