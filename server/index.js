@@ -1,32 +1,53 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
+const express = require("express");
+const db = require("./db");
+const authRoutes = require("./routes/auth");
+const walletRoutes = require("./routes/wallet");
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("db connected"))
-    .catch((err) => console.log(err));
-
-
-
-//bring the library to work
-const express = require('express');
-const user = require("./models/User");
-
-//create a app
 const app = express();
+app.use(express.json());
 
-// when someone visit '/health' they get 'ok'
-app.get('/health', (req, res) => {
-    res.send("ok");
+app.use("/api/auth", authRoutes);
+app.use("/api/wallet", walletRoutes);
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Wallet API is running",
+    status: "healthy",
+    endpoints: {
+      health: "/health",
+      dbHealth: "/health/db",
+      auth: {
+        register: "POST /api/auth/register",
+        login: "POST /api/auth/login",
+        me: "GET /api/auth/me (Requires Bearer token)",
+      },
+      wallet: {
+        balance: "GET /api/wallet/balance (Requires Bearer token)",
+        deposit: "POST /api/wallet/deposit (Requires Bearer token)",
+        transfer: "POST /api/wallet/transfer (Requires Bearer token)",
+        transactions: "GET /api/wallet/transactions (Requires Bearer token)",
+      },
+    },
+  });
 });
 
-app.get('/hello/:name', (req, res) => {
-    res.json({
-        "message": "hello " + req.params.name,
-        "status": "ok"
-    })
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
-//start the server
-app.listen(5000, () => {
-    console.log("server is running")
+app.get("/health/db", async (req, res) => {
+  try {
+    const result = await db.query("SELECT NOW()");
+    res.json({ status: "connected", timestamp: result.rows[0].now });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
 });
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+
