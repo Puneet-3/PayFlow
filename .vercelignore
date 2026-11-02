@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+**/.env
+**/.env.*
+node_modules
+**/node_modules
+client/dist
+client/tests
+client/scripts
+server/tests
+server/integration
+*.log
+**/*.log

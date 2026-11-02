@@ -204,6 +204,8 @@ $first.transaction.id -eq $retry.transaction.id # True: one deposit
 
 ## Frontend and local preview
 
+For cloud configuration, see [Deploying to Vercel](docs/DEPLOYMENT.md).
+
 The React frontend supports registration, login, balance display, simulated deposits, transfers, searchable recent activity, and logout. The review dialog confirms payment details before submission. Activity totals cover only the latest 50 transactions returned by the API.
 
 Use Node.js 22.12 or later in the Node 22 release line for the frontend toolchain. From the repository root, install dependencies:

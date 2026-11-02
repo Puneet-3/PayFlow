@@ -6,10 +6,15 @@ const pool = new Pool({
     process.env.DATABASE_URL && !process.env.DATABASE_URL.includes("localhost")
       ? { rejectUnauthorized: false }
       : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
+  max: process.env.VERCEL ? 3 : 20,
+  idleTimeoutMillis: process.env.VERCEL ? 5000 : 30000,
   connectionTimeoutMillis: 10000,
 });
+
+if (process.env.VERCEL) {
+  // Close idle clients before a Fluid Compute instance is suspended.
+  require("@vercel/functions").attachDatabasePool(pool);
+}
 
 pool.on("error", (err) => {
   console.error("Unexpected error on idle PostgreSQL client", err);

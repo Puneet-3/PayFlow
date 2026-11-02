@@ -48,13 +48,19 @@ app.get("/health/db", async (req, res) => {
     const result = await db.query("SELECT NOW()");
     res.json({ status: "connected", timestamp: result.rows[0].now });
   } catch (err) {
-    res.status(500).json({ status: "error", message: err.message });
+    console.error("Database health check failed:", err.code || "unknown");
+    res.status(503).json({ status: "error", message: "Database connection unavailable" });
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Importing the Vercel handler must not start a long-running local listener.
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
 
 
