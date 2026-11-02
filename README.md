@@ -1,12 +1,16 @@
 # PayFlow — High-Concurrency Digital Wallet & P2P Payment Engine
 
-[![Node.js](https://img.shields.io/badge/Node.js-v18+-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![Express.js](https://img.shields.io/badge/Express.js-5.x-000000?logo=express&logoColor=white)](https://expressjs.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![JWT](https://img.shields.io/badge/JWT-Authentication-black?logo=jsonwebtokens)](https://jwt.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 PayFlow is a practice digital wallet with a **React frontend** and a **Node.js, Express, and PostgreSQL backend**. Peer-to-peer transfers use PostgreSQL transactions and ordered row locks to keep balance updates consistent. Deposits create simulated funds; the app has no bank or payment-provider integration.
+
+**[Open the hosted wallet preview →](https://payflow-git-deploy-vercel-preview-puneet-s-projects46.vercel.app)**
+
+Create an account or sign in to explore the wallet. This is a Vercel Preview deployment with simulated funds. See [deployment details](docs/DEPLOYMENT.md) for configuration and verification scope.
 
 ---
 

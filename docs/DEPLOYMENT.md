@@ -2,6 +2,16 @@
 
 PayFlow deploys the React client and Express API as one Vercel project. The database remains in Supabase. This is a practice wallet with simulated funds.
 
+## Hosted preview
+
+**[Open PayFlow](https://payflow-git-deploy-vercel-preview-puneet-s-projects46.vercel.app)**
+
+The preview build reached Vercel's `READY` state on 2 November 2026. It uses source commit `f277d7a`, deployment `dpl_E94WCYPu4ZYFJh7BtfNyYzPFFLq1`, and the `deploy/vercel-preview` branch. The stable branch URL above follows subsequent successful previews.
+
+The server environment contains encrypted `DATABASE_URL` and `JWT_SECRET` variables scoped to Preview. The signing secret is different from local development; neither value is in GitHub or the client bundle. Use this preview URL rather than the project's production alias, whose environment has not been configured.
+
+Verification covers the Vercel build result, local handler and application tests, frontend rendering/build, and a read-only check that the existing database has all five required tables. A full signed-in walkthrough against the hosted preview has not been verified.
+
 ## Build and routing
 
 - Project root: repository root, not `client/` or `server/`.
