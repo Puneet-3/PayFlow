@@ -6,6 +6,9 @@
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- api client server package.json package-lock.json vercel.json .vercelignore",
   "outputDirectory": "client/dist",
   "regions": ["syd1"],
+  "git": {
+    "deploymentEnabled": { "main": false, "deploy/vercel-preview": true }
+  },
   "functions": {
     "api/index.js": { "maxDuration": 30 }
   },

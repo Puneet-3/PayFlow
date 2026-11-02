@@ -51,4 +51,4 @@ npm.cmd --prefix client run test:render
 
 These cover the API handler, session and wallet behavior with mocked database connections, client utilities, component markup, and the production frontend build. Real PostgreSQL tests are available separately through `npm.cmd --prefix server run test:integration`.
 
-Preview deployments are separate from production. Use the deployment URL shown by Vercel; production promotion is a separate action. GitHub links should identify previews clearly.
+Automatic deployments are enabled for `deploy/vercel-preview` and disabled for `main`, keeping this setup in the Preview environment. Push tested changes to the preview branch to rebuild it. Preview deployments are separate from production; production deployment requires separately configured server variables and an explicit deployment action. GitHub links should identify previews clearly.
