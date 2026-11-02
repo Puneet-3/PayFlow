@@ -1,5 +1,9 @@
 require("dotenv").config();
 const db = require("./db");
+const { readFileSync } = require("node:fs");
+const path = require("node:path");
+const idempotencySchema = readFileSync(path.join(__dirname, "migrations", "001_idempotency.sql"), "utf8");
+const sessionsSchema = readFileSync(path.join(__dirname, "migrations", "002_auth_sessions.sql"), "utf8");
 
 const migrate = async () => {
   const ddlQuery = `
@@ -42,7 +46,13 @@ const migrate = async () => {
     CREATE INDEX IF NOT EXISTS idx_transactions_receiver ON transactions(receiver_wallet_id);
     CREATE INDEX IF NOT EXISTS idx_transactions_created_at ON transactions(created_at DESC);
 
-    -- 4. Backfill wallets for any existing users who don't have one yet
+    -- 4. Payment keys and successful responses (committed with wallet changes)
+    ${idempotencySchema}
+
+    -- 5. Server-side login sessions
+    ${sessionsSchema}
+
+    -- 6. Backfill wallets for any existing users who don't have one yet
     INSERT INTO wallets (user_id, balance)
     SELECT id, 0.00 FROM users
     WHERE id NOT IN (SELECT user_id FROM wallets)
@@ -51,7 +61,7 @@ const migrate = async () => {
 
   try {
     await db.query(ddlQuery);
-    console.log("Migration complete: 'users', 'wallets', and 'transactions' tables verified.");
+    console.log("Migration complete: 'users', 'wallets', 'transactions', 'payment_requests', and 'auth_sessions' tables verified.");
     process.exit(0);
   } catch (error) {
     console.error("Migration failed:", error.message);

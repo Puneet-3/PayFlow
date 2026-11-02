@@ -3,14 +3,20 @@ const express = require("express");
 const db = require("./db");
 const authRoutes = require("./routes/auth");
 const walletRoutes = require("./routes/wallet");
+const path = require("node:path");
 
 const app = express();
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/wallet", walletRoutes);
+app.use(express.static(path.join(__dirname, "..", "client", "dist"), {
+  setHeaders(res, filePath) {
+    if (filePath.endsWith("index.html")) res.set("Cache-Control", "no-store");
+  },
+}));
 
-app.get("/", (req, res) => {
+app.get(["/", "/api"], (req, res) => {
   res.json({
     message: "Wallet API is running",
     status: "healthy",
@@ -20,6 +26,7 @@ app.get("/", (req, res) => {
       auth: {
         register: "POST /api/auth/register",
         login: "POST /api/auth/login",
+        logout: "POST /api/auth/logout (Requires Bearer token)",
         me: "GET /api/auth/me (Requires Bearer token)",
       },
       wallet: {
